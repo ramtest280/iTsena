@@ -25,6 +25,12 @@ class Livraison
     #[ORM\Column]
     private ?int $Frais = null;
 
+    #[ORM\ManyToOne]
+    private ?Fournisseur $Fournisseur = null;
+
+    #[ORM\ManyToOne]
+    private ?Produit $Produit = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +80,30 @@ class Livraison
     public function setFrais(int $Frais): static
     {
         $this->Frais = $Frais;
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->Fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $Fournisseur): static
+    {
+        $this->Fournisseur = $Fournisseur;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->Produit;
+    }
+
+    public function setProduit(?Produit $Produit): static
+    {
+        $this->Produit = $Produit;
 
         return $this;
     }
