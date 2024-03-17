@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cleint;
 use App\Form\ClientType;
 use App\Repository\CleintRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class ClientController extends AbstractController
     }
 
     #[Route('/ajouter', name: 'creation_client')]
-    public function new(Request $request, CleintRepository $cleintRepository): Response
+    public function new(Request $request, CleintRepository $cleintRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         
         $client = new Cleint();
@@ -32,9 +33,11 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $cleintRepository->add($client, true);
+            // $cleintRepository->add($client, true);
+            $entityManagerInterface->persist($client);
+            $entityManagerInterface->flush();
             $this->addFlash('success', 'Client ajouté avec succes');
-            return $this->redirectToRoute('liste_clients', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('listes_clients', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('client/ajout.html.twig', [

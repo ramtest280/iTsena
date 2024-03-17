@@ -14,7 +14,13 @@ class Cleint
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    // #[UniqueEntity()]
     private ?string $nom = null;
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 
     public function getId(): ?int
     {
